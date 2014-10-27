@@ -8,7 +8,7 @@ $(document).on("ready", function(e){
                 generateBoard:false
             })
         }
-    });
+    }).trigger("click");
     $("a#check").on("click", function(e){
         Sudoku.Check()
     });

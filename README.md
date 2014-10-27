@@ -1,10 +1,13 @@
-sudoku
-======
+==========
+= sudoku =
+==========
 
 An online Sudoku game by Asaf Nachmany (asafiniu@gmail.com)
 
 The game consists of two layers -
+
 1. "The Head" (page.js/page.html and the CSS skins)
+
 2. "The Heart" - the game logic itself (sudoku.js)
 
 ------------

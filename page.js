@@ -18,4 +18,7 @@ $(document).on("ready", function(e){
             Sudoku.Solve("div#board")
         }
     })
+    $("select").on("change", function(e){
+        $("body").attr("class", $(e.target).find("option:selected").attr("name"))
+    })
 })

@@ -1,4 +1,3 @@
-
 /* Board */
 body{
 text-align:center;
@@ -16,15 +15,15 @@ body div#buttons > a{
 padding:5px 10px;
 text-align:center;
 text-decoration:none!important;
-width:200px;
+width:120px;
 display:none;
 margin:5px auto;
-background-color:#fff;
+background-color:transparent;
 color:#808080;
 border:1px solid #808080
 }
 body div#buttons.all a,
-body div#buttons > a#play{display:block}
+body div#buttons > a#play{display:inline-block}
 body div#buttons > a:hover{
 background-color:#808080;
 color:#bebebe;
@@ -58,22 +57,7 @@ border-color:red
 }
 /* */
 
-/* Tooltip */
-.tooltip {
-background-color:#fff;
-border:2px solid #000;
-position:absolute;
-padding:10px;
-margin:2px -50px;
-z-index:9999;
-}
-.tooltip .arrow{
-border:5px solid transparent;
-border-bottom-color:#000;
-position:absolute;
-margin-top:-22px
-}
-.tooltip ul.values,
+/* Suggestion Tiles */
 ul#tiles{
 opacity:1;
 transition:opacity .75s ease-in-out;
@@ -85,7 +69,6 @@ margin:0;
 padding:0;
 display:none
 }
-.tooltip ul.values li,
 ul#tiles li.tile{
 display:inline-block;
 border:1px solid black;
@@ -99,13 +82,13 @@ background-color:#fff!important;
 opacity:0.4!important;
 cursor:default
 }
-.tooltip ul.values li:hover,
 ul#tiles li.tile:hover{
 background-color:#bebebe;
 opacity:0.75;
 }
-.tooltip ul.values li:active,
-ul#tiles li.tile:active{
-opacity:0.5
-}
+ul#tiles li.tile:active{opacity:0.5}
+/* */
+
+/* Theme selector */
+div#theme{margin:10px auto}
 /* */

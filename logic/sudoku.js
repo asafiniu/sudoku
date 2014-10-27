@@ -1,11 +1,19 @@
 Sudoku = (function(){
     /*
-     * This is an online Sudoku game
+     * An online Sudoku game by Asaf Nachmany (asafiniu@gmail.com)
      * Public methods:
-     * -
-     * -
+     * - Check:
+     *      Check if the game is solved and if not, mark the missing/invalid values in red
+     * - Start:
+     *      Start a new game
+     * - Solve:
+     *      Solve the current board
      */
     var _board = {
+        options:{
+            generateBoard:false,
+            tilesToExpose:30
+        },
         example_matrix:[
             [5,3,4,6,7,8,9,1,2],
             [6,7,2,1,9,5,3,4,8],
@@ -17,17 +25,7 @@ Sudoku = (function(){
             [2,8,7,4,1,9,6,3,5],
             [3,4,5,2,8,6,1,7,9]
         ],
-        matrix:[
-            ["","","","","","","","",""],
-            ["","","","","","","","",""],
-            ["","","","","","","","",""],
-            ["","","","","","","","",""],
-            ["","","","","","","","",""],
-            ["","","","","","","","",""],
-            ["","","","","","","","",""],
-            ["","","","","","","","",""],
-            ["","","","","","","","",""]
-        ],
+        matrix:"",
         generate:function(appendTo){
             appendTo = $(appendTo);
             if ( appendTo.length ) {
@@ -40,8 +38,6 @@ Sudoku = (function(){
                             "class": "cell" + ((section.row + section.col) % 2 == 0 ? " grey" : ""),
                             "data-row": a,
                             "data-col": b,
-                            "data-section-section": [section.row, section.col].join(""),
-                            "data-section-col": b/3,
                             "html":_board.matrix[a][b]
                         })}))
                     }
@@ -70,22 +66,26 @@ Sudoku = (function(){
             return appendTo
         },
         tilesToExpose:function(){
-            return [
-                "0,0", "0,1", "0,4", "1,0", "1,3", "1,4", "1,5", "2,1", "2,2", "2,7",
-                "3,0", "3,4", "3,8", "4,0", "4,3", "4,5", "4,8", "5,0", "5,4", "5,8",
-                "6,1", "6,6", "6,7", "7,3", "7,4", "7,5", "7,8", "8,4", "8,7", "8,8"
-            ];
-
             var tiles = [];
-            for(var i = 0; i < 30; i++) {
-                tiles.push(Math.floor(Math.random() * 8) + "," + Math.floor(Math.random() * 8));
+            if ( _board.options.generateBoard ) {
+                for(var i = 0; i < _board.options.tilesToExpose; i++) {
+                    tiles.push(Math.floor(Math.random() * 8) + "," + Math.floor(Math.random() * 8));
+                }
+            }
+            else {
+                tiles = [
+                    "0,0", "0,1", "0,4", "1,0", "1,3", "1,4", "1,5", "2,1", "2,2", "2,7",
+                    "3,0", "3,4", "3,8", "4,0", "4,3", "4,5", "4,8", "5,0", "5,4", "5,8",
+                    "6,1", "6,6", "6,7", "7,3", "7,4", "7,5", "7,8", "8,4", "8,7", "8,8"
+                ]
             }
 
             return tiles
         },
         start:function(appendTo, options){
             if ( options ){
-                if ( options.generateBoard ) {
+                _board.options = $.extend(_board.options, options || {});
+                if ( _board.options.generateBoard ) {
                     _board.solution = _board.matrix;
                     _generator.solve()
                 }
@@ -94,29 +94,70 @@ Sudoku = (function(){
                 }
             }
 
-            $.each(_board.tilesToExpose(), function(i, ab){
-                ab = ab.split(",");
-                var a = parseInt(ab[0]);
-                var b = parseInt(ab[1])
+            _board.matrix = [
+                ["","","","","","","","",""],
+                ["","","","","","","","",""],
+                ["","","","","","","","",""],
+                ["","","","","","","","",""],
+                ["","","","","","","","",""],
+                ["","","","","","","","",""],
+                ["","","","","","","","",""],
+                ["","","","","","","","",""],
+                ["","","","","","","","",""]
+            ];
+            var tiles = _board.tilesToExpose();
+            for(var i = 0; i < tiles.length; i++){
+                var tileLoc = tiles[i].split(",");
+                var a = parseInt(tileLoc[0]);
+                var b = parseInt(tileLoc[1]);
                 _board.matrix[a][b] = _board.solution[a][b]
-            });
+            }
 
             _board.tiles.attachEvents();
+            _board.tiles.unlock();
+            _board.unlock()
 
             return _board.generate(appendTo)
         },
-        check:function(){
-            for(var a = 0; a < _board.matrix.length; a++) {
-                for(var b = 0; b < _board.matrix[a].length; b++) {
-                    if ( _board.matrix[a][b] != _board.solution[a][b] ) {
-                        $("div.cell[data-row="+a+"][data-col="+b+"]").addClass("error")
+        getCellOnBoard:function(a, b){
+            return $("div.cell[data-row="+a+"][data-col="+b+"]")
+        },
+        updateMatrix:function(){
+            for(var a = 0; a < _board.matrix.length; a++){
+                for(var b = 0; b < _board.matrix[a].length; b++){
+                    var value = _board.getCellOnBoard(a, b).html();
+                    if ( !isNaN(value) ) {
+                        _board.matrix[a][b] = parseInt(value)
                     }
                 }
             }
         },
+        check:function(){
+            var gameOver = true;
+            for(var a = 0; a < _board.matrix.length; a++) {
+                for(var b = 0; b < _board.matrix[a].length; b++) {
+                    if ( _board.matrix[a][b] != _board.solution[a][b] ) {
+                        gameOver = false;
+                        _board.getCellOnBoard(a, b).addClass("error")
+                    }
+                }
+            }
+
+            if ( gameOver ) {
+                alert("Congratulations!\nYou did it!")
+            }
+        },
         solve:function(appendTo){
             _board.matrix = _board.solution;
-            return _board.generate(appendTo)
+            _board.generate(appendTo);
+            _board.tiles.lock();
+            _board.lock()
+        },
+        lock:function(){
+            $("div.cell").addClass("locked")
+        },
+        unlock:function(){
+            $("div.cell.locked").removeClass("locked")
         },
         tiles:{
             lock:function(){ return $("ul#tiles").addClass("locked") },
@@ -132,6 +173,7 @@ Sudoku = (function(){
                         }
                         else {
                             $("div.cell.selected").html(value).removeClass("selected");
+                            _board.updateMatrix();
                             _board.tiles.lock()
                         }
                     }
@@ -171,16 +213,15 @@ Sudoku = (function(){
             if ( !solved ) {
                 var cell = _generator.getNextEmptyCell(_board.solution);
                 var values = _generator.getPossibleValues(_board.solution, cell.row, cell.col).sort(function(a, b){ return Math.random()*a < Math.random()*b });
-                $.each(values, function(i, v){
-                    _board.solution[cell.row][cell.col] = v;
+                for(var i = 0; i < values.length; i++){
+                    _board.solution[cell.row][cell.col] = values[i];
                     if ( _generator.solve(_board.solution) ) {
-                        console.log(_board.solution.toString())
                         solved = true
                     }
                     else {
                         _board.solution[cell.row][cell.col] = ""
                     }
-                })
+                }
             }
 
             return solved

@@ -1,0 +1,44 @@
+/* Board */
+body.dark{
+background-color:#521414;
+color:#fff
+}
+body.dark a{color:#fdfdc8}
+body.dark div#board{border:2px solid #fdfdc8}
+body.dark div#buttons > a{
+color:#fdfdc8;
+border:1px solid #fdfdc8;
+border-radius:5px;
+}
+body.dark div#buttons > a:hover{
+background-color:#fdfdc8;
+color:#521414;
+}
+body.dark div#buttons > a:active{color:#ff0}
+/* */
+
+/* Board Cell */
+body.dark div#board div.cell{
+border:1px solid #ff6;
+color:#fff;
+}
+body.dark div#board div.cell.grey{background:#77773a}
+body.dark div#board div.cell.selected{
+background-color:#000;
+color:#fff
+}
+body.dark div#board div.cell:hover{border-color:#ff6}
+body.dark div#board div.cell.error{
+color:red;
+background-color:red;
+}
+/* */
+
+/* Suggestion Tiles */
+body.dark ul#tiles.locked li.tile{background-color:#fff!important}
+body.dark ul#tiles li.tile{
+border:1px solid #ff6;
+color:#fff
+}
+body.dark ul#tiles li.tile:hover{background-color:#ff6}
+/* */

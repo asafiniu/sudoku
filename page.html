@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Asaf Nachmany's Sodoku</title>
+        <link rel="stylesheet" type="text/css" href="page.css">
+    </head>
+    <body>
+        <div id="content">
+            <h1>My Sudoku</h1>
+            <h3>by <a target="_blank" href="mailto:asafiniu@gmail.com?subject=Your%20Sudoku%20Challenge">Asaf Nachmany</a></h3>
+            <div id="board"></div>
+            <ul id="tiles" class="locked">
+                <li class="tile">1</li>
+                <li class="tile">2</li>
+                <li class="tile">3</li>
+                <li class="tile">4</li>
+                <li class="tile">5</li>
+                <li class="tile">6</li>
+                <li class="tile">7</li>
+                <li class="tile">8</li>
+                <li class="tile">9</li>
+            </ul>
+            <div id="buttons">
+                <a href="javascript:void(0);" id="play">Play now!</a>
+                <a href="javascript:void(0);" id="check">How am I doing?</a>
+                <a href="javascript:void(0);" id="solve">Solve it now</a>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="logic/sudoku.js"></script>
+        <script type="text/javascript" src="page.js"></script>
+    </body>
+</html>

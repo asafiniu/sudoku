@@ -84,7 +84,16 @@ Sudoku = (function(){
             return tiles
         },
         start:function(appendTo, options){
-            _board.solution = _board.example_matrix;
+            if ( options ){
+                if ( options.generateBoard ) {
+                    _board.solution = _board.matrix;
+                    _generator.solve()
+                }
+                else {
+                    _board.solution = _board.example_matrix
+                }
+            }
+
             $.each(_board.tilesToExpose(), function(i, ab){
                 ab = ab.split(",");
                 var a = parseInt(ab[0]);
@@ -153,6 +162,80 @@ Sudoku = (function(){
                     _board.tiles.lock()
                 }
             }
+        }
+    };
+
+    var _generator = {
+        solve:function(){
+            var solved = _generator.isBoardFull(_board.solution)
+            if ( !solved ) {
+                var cell = _generator.getNextEmptyCell(_board.solution);
+                var values = _generator.getPossibleValues(_board.solution, cell.row, cell.col).sort(function(a, b){ return Math.random()*a < Math.random()*b });
+                $.each(values, function(i, v){
+                    _board.solution[cell.row][cell.col] = v;
+                    if ( _generator.solve(_board.solution) ) {
+                        console.log(_board.solution.toString())
+                        solved = true
+                    }
+                    else {
+                        _board.solution[cell.row][cell.col] = ""
+                    }
+                })
+            }
+
+            return solved
+        },
+        getNextEmptyCell:function(board){
+            var emptyCell = "";
+            for(var a = 0; !emptyCell && a < board.length; a++) {
+                for(var b = 0; !emptyCell && b < board[a].length; b++) {
+                    emptyCell = (board[a][b] ? "" : {row:a, col: b})
+                }
+            }
+
+            return emptyCell
+        },
+        getPossibleValues:function(board, a, b){
+            var values = [1,2,3,4,5,6,7,8,9];
+            for(var i = 0; i < 9; i++) { // Find in row
+                var inValues = values.indexOf(board[a][i])
+                if ( inValues > 0 ) {
+                    values.splice(inValues, 1)
+                }
+            }
+
+            for(var i = 0; i < 9; i++) { // Find in column
+                var inValues = values.indexOf(board[i][b])
+                if ( inValues > 0 ) {
+                    values.splice(inValues, 1)
+                }
+            }
+
+            for(var i = 0; i < values.length; i++) { // Find in section
+                if ( _generator.isValueInSection(board, a, b, values[i]) ) {
+                    values.splice(i, 1)
+                }
+            }
+
+            return values
+        },
+        isBoardFull:function(board) {
+            return board && board.toString().match(/\,\,/) == null
+        },
+        isValueInSection:function(board, a, b, val){
+            var sectionA = Math.floor(a/3);
+            var sectionB = Math.floor(b/3);
+            for(var x = (3*sectionA); x < (3*sectionA) + 3; x++){
+                for(var y = (3*sectionB); y < (3*sectionB) + 3; y++){
+                    var sectionX = Math.floor(x/3);
+                    var sectionY = Math.floor(y/3);
+                    if ( sectionX == sectionA && sectionY == sectionB && board[x][y] == val ) {
+                        return true
+                    }
+                }
+            }
+
+            return false
         }
     };
 

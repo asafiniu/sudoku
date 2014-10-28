@@ -35,6 +35,7 @@ Javascript code is written in JQuery (imported v1.11.1).
 JQuery provides cleaner, more maintainable code and allows for easier DOM manipilation (mostly in syncing the game matrix with the displayed HTML structure).
 
 CSS code is CSS2.1 compliant in favor of supporting different browsers.
+Using specific media queries, this game has been adapted to several mobile screens.
 
 NOTE: I generate classes for every JS file I create in order to keep private methods unreachable to webconsole users. It is not really "code-hiding" in the sense of securing code, but it's a start.
 

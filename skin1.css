@@ -1,13 +1,15 @@
 /* Board */
 body{
 text-align:center;
--webkit-user-select:none!important
+-webkit-user-select:none!important;
+width:auto;
 }
+body table{border-spacing:0}
 body div#board{
 display:none;
 border:2px solid #808080;
 height:auto;
-width:416px;
+width:396px;
 margin:10px auto
 }
 body div#buttons{margin:10px auto}
@@ -39,12 +41,20 @@ height:40px;
 text-align:center;
 font-size:30px;
 line-height:42px;
-outline:none
+outline:none;
+transition:all .1s linear .1s;
+-webkit-transition:all .1s linear .1s
 }
 body div#board div.cell.grey{background:#bebebe}
+body div#board table.selected div.cell{opacity:0.2}
 body div#board div.cell.selected{
-background-color:#000;
-color:#fff
+opacity:1!important;
+-moz-box-shadow:2px 2px 4px #808080;
+-webkit-box-shadow:2px 2px 4px #808080;
+box-shadow:2px 2px 4px #808080;
+-ms-filter:"progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808080')";
+filter:progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808080');
+border-color:#00f
 }
 div#board div.cell:hover{
 border-color:#bebebe;
@@ -58,18 +68,18 @@ border-color:red
 /* */
 
 /* Suggestion Tiles */
-ul#tiles{
+body ul#tiles{
 opacity:1;
-transition:opacity .75s ease-in-out;
--moz-transition:opacity .75s ease-in-out;
--webkit-transition:opacity .75s ease-in-out;
 width:auto;
 max-height:50px;
 margin:0;
 padding:0;
 display:none
 }
-ul#tiles li.tile{
+body ul#tiles li.tile{
+transition:all .75s ease-in-out;
+-moz-transition:all .75s ease-in-out;
+-webkit-transition:all .75s ease-in-out;
 display:inline-block;
 border:1px solid black;
 font-size:30px;
@@ -77,18 +87,124 @@ padding:0px 10px;
 margin-right:2px;
 cursor:pointer
 }
-ul#tiles.locked li.tile{
+body ul#tiles.locked li.tile{
 background-color:#fff!important;
 opacity:0.4!important;
-cursor:default
+cursor:default;
+padding:0 3px;
+font-size:10px
 }
-ul#tiles li.tile:hover{
+body ul#tiles li.tile:hover{
 background-color:#bebebe;
 opacity:0.75;
 }
-ul#tiles li.tile:active{opacity:0.5}
+body ul#tiles li.tile:active{opacity:0.5}
 /* */
 
 /* Theme selector */
-div#theme{margin:10px auto}
+body div#theme{margin:10px auto}
+/* */
+
+/* Device specific responsiveness */
+    /* Smartphones (portrait and landscape) ----------- */
+    @media only screen and (min-device-width:320px) and (max-device-width:480px) {
+        body div#buttons.all a,body div#buttons > a#play{
+        font-size:12px;
+        padding:0;
+        width:95px
+        }
+        h1,h2,h3{
+        -webkit-margin-before:0;
+        -webkit-margin-after:0
+        }
+        body ul#tiles li.tile{font-size:40px}
+        body div#board div.cell{
+        width:53px;
+        height:53px
+        }
+    }
+
+    /* Smartphones (portrait) ----------- */
+    @media only screen and (max-device-width:320px) {
+        body{width:32%}
+        body div#board{width:92%}
+        body div#board div.cell{
+        width:28px;
+        height:28px;
+        font-size:20px;
+        line-height:28px
+        }
+        body ul#tiles li.tile{
+        font-size:11px;
+        padding:7px
+        }
+    }
+
+    /* Smartphones (landscape) ----------- */
+    @media only screen and (min-device-width:321px){
+        body{width:50%}
+        body div#board{width:59%}
+        body div#buttons {margin:0 auto}
+    }
+
+    /* iPads (portrait and landscape) ----------- */
+    @media only screen and (min-device-width:768px) and (max-device-width:1024px) {
+        body{width:55%}
+        body div#board{width:95%}
+    }
+
+    /* iPads (landscape) ----------- */
+    @media only screen and (min-device-width:768px) and (max-device-width:1024px) and (orientation:landscape) {
+        body{width:100%}
+        body div#board{width:38.75%}
+    }
+
+    /* iPads (portrait) ----------- */
+    @media only screen and (min-device-width:768px) and (max-device-width:1024px) and (orientation:portrait) {
+        body{width:78%}
+        body div#board{width:67%}
+    }
+
+    /* Desktops and laptops ----------- */
+    @media only screen and (min-device-width:1224px) {
+        body{width:55%}
+        body div#board{width:95%}
+    }
+
+    /* Large screens ----------- */
+    @media only screen and (min-device-width:1824px) {
+        body{width:55%}
+        body div#board{width:95%}
+    }
+
+    /* iPhone 5 (portrait) ----------- */
+    @media only screen and (-webkit-device-pixel-ratio:2), only screen and (device-pixel-ratio:2){
+        body{width:100%}
+        body div#board{width:100%}
+        body ul#tiles li.tile{font-size:40px}
+        body div#board div.cell{
+        font-size:40px;
+        line-height:104px;
+        width:104px;
+        height:104px
+        }
+    }
+
+    /* iPhone 5 (landscape) ----------- */
+    @media only screen and (-webkit-device-pixel-ratio:2), only screen and (device-pixel-ratio:2) and (min-device-width:321px) {
+        body{width:100%}
+        body div#board{width:34%}
+        body div#board div.cell{
+        font-size: 20px;
+        line-height: 33px;
+        width: 33px;
+        height: 33px
+        }
+    }
+
+    /* iPhone 4 ----------- */
+    @media only screen and (-webkit-device-pixel-ratio:1.5), only screen and (device-pixel-ratio:1.5){
+        body{width:31%}
+        body div#board{width:95%}
+    }
 /* */

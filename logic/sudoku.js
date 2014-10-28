@@ -114,7 +114,6 @@ Sudoku = (function(){
             }
 
             _board.tiles.attachEvents();
-            _board.tiles.unlock();
             _board.unlock()
 
             return _board.generate(appendTo)
@@ -174,6 +173,7 @@ Sudoku = (function(){
                         else {
                             $("div.cell.selected").html(value).removeClass("selected");
                             _board.updateMatrix();
+                            _board.unlock();
                             _board.tiles.lock()
                         }
                     }
@@ -187,10 +187,12 @@ Sudoku = (function(){
                 $("div.cell.selected").removeClass("selected");
                 if ( unselect ) {
                     cell.removeClass("selected");
+                    cell.parents("table").removeClass("selected");
                     _board.tiles.lock()
                 }
                 else {
-                    cell.addClass("selected")
+                    cell.addClass("selected");
+                    cell.parents("table").addClass("selected");
                     _board.tiles.unlock()
                 }
 
